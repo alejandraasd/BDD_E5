@@ -21,17 +21,8 @@ begin
 		set @i = @i+1;
 		select @servidor = servidor, @nom_bd = bd from diccionario_dist where id_fragmento = @i;
 		
-		if @servidor='LSERVER1'
-		begin
-			--print N'Aqu� va la consulta para SQL Server'
-			set @sql1 ='select * from openquery ('+ @servidor + ',''select "'+@nom_bd+'" as "Territorio" ,TerritoryID as "ID Pa�s", count(*) as "Cantidad de clientes" from ' + @nom_bd + '.dbo' + @nom_tabla + ' '+ ' group by '+ @condicion +''')';
-
-		end
-		else
-			set @sql = 'select '''+@nom_bd+''' as Territorio,TerritoryID as "ID Pa�s", count(*) as "Cantidad de clientes" from ' + @servidor + '.' + @nom_bd + '.dbo.'+ @nom_tabla + ' '+  'group by ' + @condicion +'';
-		
-		set @sqlt = ''+@sql +' union '+ @sql1;
-		exec sp_executesql @sqlt
+			set @sql = 'select '''+@nom_bd+''' as Territorio,TerritoryID as "ID País", count(*) as "Cantidad de clientes" from ' + @servidor + '.' + @nom_bd + '.dbo.'+ @nom_tabla + ' '+  'group by ' + @condicion +'';
+		exec sp_executesql @sql
 		end 
 end
 
